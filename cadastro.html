@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST" action="php/register.php">
+        <label> Nome</label>
+        <input type="text" name="txtNome" />
+        <br />
+        <label> E-mail</label>
+        <input type="email" name="txtEmail" />
+        <br />
+        <label> Senha</label>   
+        <input type="password" name="txtSenha" />
+        <br />
+        <input type="submit" value="Registrar" />
+    </form>
+    <div id='divErro' style="display: none">
+        Login ou senha inválido.
+    </div>
+    <script src="js/login.js"></script>
+</body>
+</html>
