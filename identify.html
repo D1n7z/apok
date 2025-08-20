@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email de identificação</title>
+</head>
+<body>
+    <form method="POST" action="php/register.php">
+        <p>Insira o E-mail referente a sua conta e enviaremos um link de redifinição de senha</p>
+        <label> Insira seu E-mail</label>
+        <input type="email" name="txtEmail" />
+        <br />
+        <label> Confirme seu E-mail</label>   
+        <input type="email" name="txtEmailConfirm" />
+        <br />
+        <input type="submit" value="Enviar" />
+    </form>
+    <div id='divErro' style="display: none">
+        E-mail inválido ou diferente.
+    </div>
+    <script src="js/login.js"></script>
+</body>
+</html>
