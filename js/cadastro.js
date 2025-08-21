@@ -1,4 +1,31 @@
 const form = document.getElementById("forms"); 
+const emailInput = document.getElementById("email");
+const msg = document.getElementById("msg");
+
+emailInput.addEventListener("input", function() {
+    const emailValue = emailInput.value;
+    fetch("php/validate_email.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `email=${encodeURIComponent(emailValue)}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.exists) {
+            msg.textContent = "E-mail já cadastrado.";
+            msg.style.color = "red";
+        } else {
+            msg.textContent = "E-mail disponível.";
+            msg.style.color = "green";
+        }
+    })
+    .catch(error => {
+        console.error("Erro ao validar e-mail:", error);
+    });
+});
+
 form.addEventListener("submit", function(event){
     event.preventDefault()
     const nome = document.getElementById("nome").value.trim();
