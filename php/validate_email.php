@@ -5,7 +5,8 @@ include_once("connection.php");
 
 try{
     $conn = connectDB();
-    $email = $_POST['email'];
+    $email = $_POST['email'] ?? null;
+    error_log("Email recebido: " . $email);
 
     if($email) {
         $stmt = $conn->prepare("SELECT 1 FROM usuarios WHERE email = :email LIMIT 1");
