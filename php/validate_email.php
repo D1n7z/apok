@@ -9,7 +9,7 @@ try{
     error_log("Email recebido: " . $email);
 
     if($email) {
-        $stmt = $conn->prepare("SELECT 1 FROM usuarios WHERE email = :email LIMIT 1");
+        $stmt = $conn->prepare("SELECT 1 FROM player WHERE email = :email LIMIT 1");
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->execute();
 
