@@ -12,9 +12,9 @@ try{
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->execute();
 
-        $response = ["existe" => $stmt->fetchColumn() ? true : false];
+        $response = ["exists" => $stmt->fetchColumn() ? true : false];
     } else{
-        $response = ["existe" => false];
+        $response = ["exists" => false];
     }
 
     echo json_encode($response);
