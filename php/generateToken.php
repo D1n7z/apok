@@ -1,6 +1,41 @@
 <?php
-    $email = $_POST['txtEmail'];
+    include_once("connection.php");
+    function generateToken(){
+        $token = bin2hex(random_bytes(32));
+        $hash_token = password_hash($token, PASSWORD_BCRYPT);
+        return $hash_token;
+    }
 
-    $token = bin2hex(random_bytes(32));
-    $hash_token = password_hash($token, PASSWORD_BCRYPT);
+    function getID($email){
+        $conn = connectDB();
+
+        $sql = "SELECT id_player FROM player WHERE email = ?;";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$email]);
+        $id = $stmt->fetchColumn();
+
+        closeDB($conn);
+        return $id;
+    }
+
+    function storeToken($id_player, $hash_token){
+        $conn = connectDB();
+
+        $expires_at = date('Y-m-d H:i:s', time() + 3600);
+        $sql = "INSERT INTO tokens(id_player, expires_at, token_hash) VALUES (?, ?, ?);";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$id_player, $expires_at, $hash_token]);
+
+        closeDB($conn);
+        return true;
+    }
+
+    $email = $_POST['txtEmail'];
+    $id_player = getID($email);
+    $hash_token = generateToken();
+    if(storeToken($id_player, $hash_token)){
+        header('Location:../index.html');
+    } else{
+        header('HTTP/1.1 500 Internal Server Error');
+    }
 ?>
