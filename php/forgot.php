@@ -41,6 +41,8 @@ if ($retorno) {
             <a href=\"https://apok.up.railway.app/reset.php?token={$token}\">Redefinir Senha</a>
         ";
 
+        $mail->Timeout = 30;
+
         $mail->send();
         header('Location:../index.html');
             } catch (Exception $e) {
