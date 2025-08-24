@@ -26,9 +26,12 @@
         $result = file_get_contents('https://mailer-production-6e1d.up.railway.app/send-email', false, $context);
         if($result === FALSE){
             error_log("Erro ao enviar solicitação para o servidor.");
+            header('Location: ../index.html?error=1'); // Adiciona redirecionamento de erro
+        } else {
+            header('Location: ../index.html'); // Adiciona redirecionamento de sucesso
         }
-    } else{
+    } else {
         error_log("Erro ao processar a solicitação de recuperação de senha.");
+        header('Location: ../index.html?error=1'); // Adiciona redirecionamento de erro
     }
-
 ?>
