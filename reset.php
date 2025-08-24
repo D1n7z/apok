@@ -8,11 +8,14 @@ $message = '';
 $show_form = false; // Variável para controlar a exibição do formulário
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($token_from_url)) {
+    // 1. CRIA O HASH DO TOKEN RECEBIDO NA URL
+    $token_hash = hash('sha256', $token_from_url);
+
     $conn = connectDB();
     try {
-        // Verifica se o token existe e não está expirado
+        // 2. COMPARA O HASH com o que está no banco de dados
         $stmt = $conn->prepare("SELECT id_player FROM tokens WHERE token_hash = :token_hash AND expires_at > NOW()");
-        $stmt->bindParam(':token_hash', $token_from_url, PDO::PARAM_STR);
+        $stmt->bindParam(':token_hash', $token_hash, PDO::PARAM_STR);
         $stmt->execute();
         $token_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -41,21 +44,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (strlen($newPassword) < 6) {
         $message = "A senha deve ter pelo menos 6 caracteres.";
         $show_form = true; // Mostra o formulário novamente para o usuário corrigir
+        $token_from_url = $token_from_post; // Garante que o token continue disponível para o formulário
     } elseif (empty($token_from_post)) {
         $message = "Token inválido ou expirado.";
     } else {
+        // 3. CRIA O HASH DO TOKEN VINDO DO FORMULÁRIO (POST)
+        $token_hash_from_post = hash('sha256', $token_from_post);
+
         $conn = connectDB();
         try {
-            // Procura o token_hash no banco de dados
+            // 4. PROCURA O HASH no banco de dados
             $stmt = $conn->prepare("SELECT id_player, expires_at FROM tokens WHERE token_hash = :token_hash AND expires_at > NOW()");
-            $stmt->bindParam(':token_hash', $token_from_post, PDO::PARAM_STR);
+            $stmt->bindParam(':token_hash', $token_hash_from_post, PDO::PARAM_STR);
             $stmt->execute();
             $token_data = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($token_data) {
                 // Token é válido, prossegue com a redefinição
                 $id_player = $token_data['id_player'];
-                $hashed_password = generateHash($newPassword);
+                $hashed_password = generateHash($newPassword); // Usa BCrypt para a nova senha
 
                 // Atualiza a senha do jogador
                 $stmt = $conn->prepare("UPDATE player SET senha_hash = :senha_hash WHERE id_player = :id_player");
@@ -63,9 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->bindParam(':id_player', $id_player, PDO::PARAM_INT);
                 $stmt->execute();
 
-                // Exclui o token utilizado
+                // 5. EXCLUI O TOKEN UTILIZADO USANDO O HASH
                 $stmt = $conn->prepare("DELETE FROM tokens WHERE token_hash = :token_hash");
-                $stmt->bindParam(':token_hash', $token_from_post, PDO::PARAM_STR);
+                $stmt->bindParam(':token_hash', $token_hash_from_post, PDO::PARAM_STR);
                 $stmt->execute();
 
                 $message = "Sua senha foi redefinida com sucesso.";

@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1> Bem vindo(a) 
-        <?php echo ($_GET['id'])?>
+        <?php echo htmlspecialchars($_GET['id']); ?>
     </h1>
 </body>
 </html>
