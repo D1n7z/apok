@@ -16,7 +16,7 @@ if ($retorno) {
 
     $mail = new PHPMailer(true);
     try {
-        $mail->SMTPDebug = 0;  
+        $mail->SMTPDebug = 0;
         $mail->isSMTP();
         $mail->Host       = 'smtp-relay.brevo.com'; 
         $mail->SMTPAuth   = true;
@@ -24,6 +24,8 @@ if ($retorno) {
         $mail->Password   = 'nUcwqAbyPpt27MhQ';    
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
+        
+        $mail->CharSet = PHPMailer::CHARSET_UTF8;
 
         // Remetente e destinatário
         $mail->setFrom('noreply@capybyte.site', 'CapyByte');
