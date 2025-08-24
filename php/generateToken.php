@@ -19,6 +19,8 @@
     }
 
     function storeToken($id_player, $hash_token){
+        if(!$id_player || !$hash_token) return false;
+
         $conn = connectDB();
 
         $expires_at = date('Y-m-d H:i:s', time() + 3600);
