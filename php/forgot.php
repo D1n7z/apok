@@ -1,4 +1,6 @@
 <?php
+set_time_limit(300); // Aumenta o tempo limite de execução do script para 300 segundos.
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
