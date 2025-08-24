@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_P
 
     $mail = new PHPMailer(true);
     try {
-        $mail->SMTPDebug = 0;
+        $mail->SMTPDebug = SMTP::DEBUG_CONNECTION; // Mude de 0 para DEBUG_CONNECTION
         $mail->isSMTP();
         $mail->Host       = 'smtp-relay.brevo.com'; 
         $mail->SMTPAuth   = true;
