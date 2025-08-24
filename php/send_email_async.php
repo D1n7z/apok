@@ -21,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_P
         $mail->SMTPAuth   = true;
         $mail->Username   = '957944004@smtp-brevo.com'; 
         $mail->Password   = 'sdFTR294UGP5AzIj';    
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // Mude para SMTPS (SSL)
+        $mail->Port       = 465;                        // Mude para a porta 465
         $mail->CharSet = PHPMailer::CHARSET_UTF8;
 
         // Remetente e destinatário
