@@ -20,8 +20,8 @@ if ($retorno) {
         $mail->isSMTP();
         $mail->Host       = 'smtp-relay.brevo.com'; 
         $mail->SMTPAuth   = true;
-        $mail->Username   = '957944002@smtp-brevo.com'; 
-        $mail->Password   = 'xkYEJpmbD24UPqWa';    
+        $mail->Username   = '957944003@smtp-brevo.com'; 
+        $mail->Password   = 'xnUcwqAbyPpt27MhQ';    
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
