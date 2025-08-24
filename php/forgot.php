@@ -16,7 +16,7 @@ if ($retorno) {
 
     $mail = new PHPMailer(true);
     try {
-        $mail->SMTPDebug = \PHPMailer\PHPMailer\SMTP::DEBUG_SERVER;  
+        $mail->SMTPDebug = 0;  
         $mail->isSMTP();
         $mail->Host       = 'smtp-relay.brevo.com'; 
         $mail->SMTPAuth   = true;
