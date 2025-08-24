@@ -1,44 +1,34 @@
 <?php
-// apok/php/send_email_async.php
+// apok/php/forgot.php
 
-// Caminho corrigido para o autoloader do Composer
-require_once __DIR__ . '/../vendor/autoload.php';
+// Este ficheiro apenas gera o token e chama o script de envio
+include_once("generateToken.php");
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_POST['token'])) {
-    $email = $_POST['email'];
-    $token = $_POST['token'];
+$retorno = processForgotPassword();
 
-    
-    $config = SendinBlue\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', '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');
+if ($retorno) {
+    $email = $retorno[0];
+    $token = $retorno[1];
 
-    $apiInstance = new SendinBlue\Client\Api\TransactionalEmailsApi(
-        new GuzzleHttp\Client(),
-        $config
-    );
+    // Prepara os dados para enviar para o script de envio em segundo plano
+    $postData = http_build_query([
+        'email' => $email,
+        'token' => $token
+    ]);
 
-    $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail();
-    $sendSmtpEmail->setTo([new \SendinBlue\Client\Model\SendSmtpEmailTo(['email' => $email])]);
-    $sendSmtpEmail->setSender(new \SendinBlue\Client\Model\SendSmtpEmailSender(['name' => 'CapyByte', 'email' => 'noreply@capybyte.site']));
-    $sendSmtpEmail->setSubject('Redefinição de Senha');
+    // Comando cURL para chamar o script em segundo plano
+    $command = 'curl -X POST -d "' . $postData . '" ' .
+               'https://capybyte.site/php/send_email_async.php' .
+               ' > /dev/null 2>&1 &';
 
-    // Monta o link de redefinição
-    $resetLink = "https://capybyte.site/reset.php?token=" . urlencode($token);
+    // Executa o comando de forma assíncrona
+    exec($command);
 
-    // Corpo do e-mail em HTML
-    $sendSmtpEmail->setHtmlContent("
-        <html><body>
-        <p>Olá,</p>
-        <p>Recebemos um pedido de redefinição de senha.</p>
-        <p>Clique no link abaixo para redefinir sua senha:</p>
-        <a href=\"{$resetLink}\">Redefinir Senha</a>
-        </body></html>
-    ");
-
-    try {
-        $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
-        error_log("E-mail para {$email} enviado com sucesso via API Brevo.");
-    } catch (Exception $e) {
-        error_log("Erro ao enviar e-mail para {$email} via API Brevo: " . $e->getMessage());
-    }
+    // Redireciona o utilizador imediatamente
+    header('Location: ../index.html?success=1');
+} else {
+    error_log("Erro ao processar a solicitacao de recuperacao de senha.");
+    header('Location: ../index.html?error=1');
 }
+
 ?>
