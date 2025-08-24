@@ -1,6 +1,5 @@
 <?php
-set_time_limit(300); // Aumenta o tempo limite de execução do script para 300 segundos.
-
+// apok/php/forgot.php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
@@ -16,43 +15,27 @@ if ($retorno) {
     $email = $retorno[0];
     $token = $retorno[1];
 
-    $mail = new PHPMailer(true);
-    try {
-        $mail->SMTPDebug = 0;
-        $mail->isSMTP();
-        $mail->Host       = 'smtp-relay.brevo.com'; 
-        $mail->SMTPAuth   = true;
-        $mail->Username   = '957944003@smtp-brevo.com'; 
-        $mail->Password   = 'nUcwqAbyPpt27MhQ';    
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
-        
-        $mail->CharSet = PHPMailer::CHARSET_UTF8;
+    // Prepara os dados para enviar para o script de envio de e-mail em segundo plano
+    $postData = http_build_query([
+        'email' => $email,
+        'token' => $token
+    ]);
+    
+    // Comando cURL para chamar o script em segundo plano
+    // O comando 'curl' chama o script, e os redirecionamentos de saída ('/dev/null 2>&1 &')
+    // garantem que a execução não espere por uma resposta.
+    $command = 'curl -X POST -d "' . $postData . '" ' .
+               'https://apok.up.railway.app/php/send_email_async.php' .
+               ' > /dev/null 2>&1 &';
 
-        // Remetente e destinatário
-        $mail->setFrom('noreply@capybyte.site', 'CapyByte');
-        $mail->addAddress($email);
+    // Executa o comando de forma assíncrona
+    exec($command);
 
-        // Conteúdo do e-mail
-        $mail->isHTML(true);
-        $mail->Subject = 'Redefinição de Senha';
-        $mail->Body    = "
-            <p>Olá,</p>
-            <p>Recebemos um pedido de redefinição de senha.</p>
-            <p>Clique no link abaixo para redefinir sua senha:</p>
-            <a href=\"https://apok.up.railway.app/reset.php?token={$token}\">Redefinir Senha</a>
-        ";
+    // Redireciona o utilizador imediatamente
+    header('Location: ../index.html?success=1');
+} else {
+    error_log("Erro ao processar a solicitacao de recuperacao de senha.");
+    header('Location: ../index.html?error=1');
+}
 
-        $mail->Timeout = 30;
-
-        $mail->send();
-        header('Location:../index.html');
-            } catch (Exception $e) {
-                error_log("Erro ao enviar e-mail: {$mail->ErrorInfo}");
-                header('Location: ../index.html?error=1');
-            }
-        } else {
-            error_log("Erro ao processar a solicitacao de recuperacao de senha.");
-            header('Location: ../index.html?error=1');
-        }
 ?>
