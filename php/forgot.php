@@ -23,7 +23,7 @@
         ];
 
         $context  = stream_context_create($options);
-        $result = file_get_contents('https://mailer.up.railway.app/send-email', false, $context);
+        $result = file_get_contents('https://mailer-production-6e1d.up.railway.app/send-email', false, $context);
         if($result === FALSE){
             error_log("Erro ao enviar solicitação para o servidor.");
         }
