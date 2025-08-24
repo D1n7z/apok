@@ -1,6 +1,6 @@
 {
     "require": {
         "heroku/heroku-buildpack-php": "*",
-        "brevo/brevo-php": "1.x.x"
+        "sendinblue/api-v3-sdk": "^8.5"
     }
 }
