@@ -15,12 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_P
 
     $mail = new PHPMailer(true);
     try {
-        $mail->SMTPDebug = SMTP::DEBUG_CONNECTION; // Mude de 0 para DEBUG_CONNECTION
+        $mail->SMTPDebug = 0;
         $mail->isSMTP();
         $mail->Host       = 'smtp-relay.brevo.com'; 
         $mail->SMTPAuth   = true;
-        $mail->Username   = '957944003@smtp-brevo.com'; 
-        $mail->Password   = 'nUcwqAbyPpt27MhQ';    
+        $mail->Username   = '957944004@smtp-brevo.com'; 
+        $mail->Password   = 'sdFTR294UGP5AzIj';    
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
         $mail->CharSet = PHPMailer::CHARSET_UTF8;
