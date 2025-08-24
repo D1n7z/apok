@@ -1,27 +1,32 @@
 <?php
-// check_smtp.php
+// apok/php/check_smtp.php
 
 $host = 'smtp-relay.brevo.com';
 $port = 587;
-$timeout = 15; // Segundos
+$timeout = 15; // Aumentei um pouco para ter certeza
 
-echo "<h1>Teste de Conexão SMTP</h1>";
-echo "<p>Tentando conectar a <strong>{$host}</strong> na porta <strong>{$port}</strong>...</p>";
+echo "<h1>Teste de Conexão SMTP para Brevo</h1>";
+echo "<p>Tentando conectar em <strong>{$host}</strong> na porta <strong>{$port}</strong>...</p>";
+echo "<p>Aguarde até {$timeout} segundos...</p>";
+flush(); // Garante que a mensagem acima seja enviada ao navegador
 
-// O '@' suprime o warning padrão para que possamos lidar com o erro de forma mais limpa.
+// O '@' suprime o warning para tratarmos o erro de forma limpa
 $socket = @fsockopen($host, $port, $errno, $errstr, $timeout);
 
 if ($socket) {
-    echo "<p style='color:green; font-weight:bold;'>Sucesso! A conexão com o servidor SMTP foi estabelecida.</p>";
-    echo "<p>Isso significa que a Railway NÃO está bloqueando a porta {$port}. O problema de timeout provavelmente está nas suas credenciais, no código do PHPMailer ou no próprio serviço da Brevo.</p>";
-    // Fecha a conexão
+    echo "<h2 style='color:green;'>Sucesso! Conexão estabelecida.</h2>";
+    echo "<p>Isso confirma que a Railway <strong>NÃO</strong> está bloqueando a porta {$port}.</p>";
+    echo "<p>O problema de timeout deve ser outro, como uma configuração incorreta no PHPMailer ou uma lentidão específica da sua conta Brevo. Verifique se o seu domínio de envio ('noreply@capybyte.site') está corretamente configurado e verificado na Brevo.</p>";
     fclose($socket);
 } else {
-    echo "<p style='color:red; font-weight:bold;'>Falha na Conexão!</p>";
-    echo "<p>Não foi possível conectar ao servidor SMTP. A Railway pode estar bloqueando a conexão ou o servidor de destino está offline.</p>";
+    echo "<h2 style='color:red;'>Falha na Conexão!</h2>";
+    echo "<p>Não foi possível conectar ao servidor da Brevo.</p>";
+    echo "<p>Isso indica fortemente que a plataforma Railway pode estar bloqueando conexões de saída na porta 587.</p>";
+    echo "<strong>Detalhes do Erro:</strong>";
     echo "<ul>";
-    echo "<li><strong>Código do Erro:</strong> " . htmlspecialchars($errno) . "</li>";
-    echo "<li><strong>Mensagem do Erro:</strong> " . htmlspecialchars($errstr) . "</li>";
+    echo "<li>Código: " . htmlspecialchars($errno) . "</li>";
+    echo "<li>Mensagem: " . htmlspecialchars($errstr) . "</li>";
     echo "</ul>";
+    echo "<p>O próximo passo seria contatar o suporte da Railway ou verificar a documentação deles sobre políticas de firewall para tráfego de saída.</p>";
 }
 ?>
