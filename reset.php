@@ -97,6 +97,7 @@ if (empty($token_from_url) && $_SERVER['REQUEST_METHOD'] === 'GET') {
 <html>
     <head>
         <title>Redefinir Senha</title>
+        <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
         <h1>Redefinir Senha</h1>
