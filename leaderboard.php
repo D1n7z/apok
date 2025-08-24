@@ -1,15 +1,16 @@
 <?php
-// leaderboard.php
 
-$jsonFile = __DIR__ . '/leaderboard.json';
-if (!file_exists($jsonFile)) {
-    echo "Arquivo não encontrado.";
-    exit;
-}
+$apiUrl = 'https://apimemories.onrender.com/leaderboard'; 
 
-$data = json_decode(file_get_contents($jsonFile), true);
-if (!$data) {
-    echo "Erro ao ler JSON.";
+$ch = curl_init($apiUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+$response = curl_exec($ch);
+curl_close($ch);
+
+$data = json_decode($response, true);
+if (!$data || isset($data['erro'])) {
+    echo "Erro ao buscar leaderboard.";
     exit;
 }
 
@@ -32,17 +33,11 @@ usort($data, function($a, $b) {
 <head>
     <meta charset="UTF-8">
     <title>Leaderboard</title>
-    <style>
-        table { border-collapse: collapse; width: 60%; margin: 30px auto; }
-        th, td { border: 1px solid #888; padding: 8px 12px; text-align: center; }
-        th { background: #eee; }
-        body { font-family: Arial, sans-serif; background: #fafafa; }
-        h1 { text-align: center; }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <h1>Leaderboard</h1>
-    <table>
+    <table class="leaderboard">
         <tr>
             <th>Nome</th>
             <th>n_percentage</th>
