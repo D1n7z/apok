@@ -16,7 +16,7 @@ if ($retorno) {
 
     $mail = new PHPMailer(true);
     try {
-        $mail->SMTPDebug = 0;
+        $mail->SMTPDebug = SMTP::DEBUG_OFF;
         $mail->isSMTP();
         $mail->Host       = 'smtp-relay.brevo.com'; 
         $mail->SMTPAuth   = true;
@@ -51,5 +51,4 @@ if ($retorno) {
             error_log("Erro ao processar a solicitacao de recuperacao de senha.");
             header('Location: ../index.html?error=1');
         }
-
 ?>
