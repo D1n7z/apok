@@ -23,7 +23,7 @@ if ($retorno) {
 
     // Comando cURL para chamar o script em segundo plano
     $command = 'curl -X POST -d "' . $postData . '" ' .
-               'https://apok.up.railway.app/php/send_email_async.php' .
+               'https://capybyte.site/php/send_email_async.php' .
                ' > /dev/null 2>&1 &';
 
     // Executa o comando de forma assíncrona

@@ -33,11 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_P
         $mail->isHTML(true);
         $mail->Subject = 'Redefinição de Senha';
         $mail->Body    = "
-            <p>Olá,</p>
-            <p>Recebemos um pedido de redefinição de senha.</p>
-            <p>Clique no link abaixo para redefinir sua senha:</p>
-            <a href=\"https://apok.up.railway.app/reset.php?token={$token}\">Redefinir Senha</a>
-        ";
+                            <p>Olá,</p>
+                            <p>Recebemos um pedido de redefinição de senha.</p>
+                            <p>Clique no link abaixo para redefinir sua senha:</p>
+                            <a href=\"https://capybyte.site/reset.php?token={$token}\">Redefinir Senha</a>
+                        ";
 
         $mail->send();
     } catch (Exception $e) {
