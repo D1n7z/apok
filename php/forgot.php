@@ -16,7 +16,7 @@ if ($retorno) {
 
     $mail = new PHPMailer(true);
     try {
-        $mail->SMTPDebug = \PHPMailer\PHPMailer\SMTP::DEBUG_SERVER;
+        $mail->SMTPDebug = 0;
         $mail->isSMTP();
         $mail->Host       = 'smtp-relay.brevo.com'; 
         $mail->SMTPAuth   = true;
@@ -33,9 +33,9 @@ if ($retorno) {
 
         // Conteúdo do e-mail
         $mail->isHTML(true);
-        $mail->Subject = 'Redefinicao de Senha';
+        $mail->Subject = 'Redefinição de Senha';
         $mail->Body    = "
-            <p>Ola,</p>
+            <p>Olá,</p>
             <p>Recebemos um pedido de redefinição de senha.</p>
             <p>Clique no link abaixo para redefinir sua senha:</p>
             <a href=\"https://apok.up.railway.app/reset.php?token={$token}\">Redefinir Senha</a>
