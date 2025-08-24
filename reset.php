@@ -53,6 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+if (strlen($newPassword) < 6) {
+    $message = "A senha deve ter pelo menos 6 caracteres.";
+}
 ?>
 
 <html>
