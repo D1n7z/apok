@@ -9,20 +9,20 @@
 <body>
     <div class="form-container">
         <form method="POST" action="php/forgot.php">
-        <p>Insira o E-mail referente a sua conta e enviaremos um link de redifinição de senha</p>
-        <label> Insira seu E-mail</label>
-        <input type="email" name="txtEmail" />
-        <br />
-        <label> Confirme seu E-mail</label>   
-        <input type="email" name="txtEmailConfirm" />
-        <br />
-        <input type="submit" value="Enviar" />
-    </form>
+            <p>Insira o E-mail referente a sua conta e enviaremos um link de redifinição de senha</p>
+            <label> Insira seu E-mail</label>
+            <input type="email" name="txtEmail" required/>
+            <br />
+            <label> Confirme seu E-mail</label>   
+            <input type="email" name="txtEmailConfirm" required/>
+            <br />
+            <input type="submit" value="Enviar" />
+        </form>
+        
+        <div id='divErro' style="display: none;">
+            </div>
     </div>
     
-    <div id='divErro' style="display: none">
-        E-mail inválido ou diferente.
-    </div>
     <script src="js/identify.js"></script>
 </body>
 </html>
