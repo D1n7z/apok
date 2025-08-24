@@ -1,10 +1,12 @@
 <?php
+// apok/reset.php
 include_once("php/connection.php");
 include_once("php/generateHash.php");
 
 $token_from_url = $_GET['token'] ?? '';
 $message = '';
 
+// Verifica se uma nova senha foi enviada
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token_from_post = $_POST['token'] ?? '';
     $newPassword = $_POST['new_password'] ?? '';
@@ -15,9 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn = connectDB();
 
         try {
-            // Procura o token no banco de dados
-            $stmt = $conn->prepare("SELECT id_player, token_hash, expires_at FROM tokens WHERE token = :token AND expires_at > NOW()");
-            $stmt->bindParam(':token', $token_from_post, PDO::PARAM_STR);
+            // Procura o token_hash no banco de dados
+            $stmt = $conn->prepare("SELECT id_player, expires_at FROM tokens WHERE token_hash = :token_hash AND expires_at > NOW()");
+            $stmt->bindParam(':token_hash', $token_from_post, PDO::PARAM_STR);
             $stmt->execute();
             $token_data = $stmt->fetch(PDO::FETCH_ASSOC);
             
@@ -33,9 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute();
 
                 // Exclui o token utilizado
-                $stmt = $conn->prepare("DELETE FROM tokens WHERE id_player = :id_player AND token = :token");
-                $stmt->bindParam(':id_player', $id_player, PDO::PARAM_INT);
-                $stmt->bindParam(':token', $token_from_post, PDO::PARAM_STR);
+                $stmt = $conn->prepare("DELETE FROM tokens WHERE token_hash = :token_hash");
+                $stmt->bindParam(':token_hash', $token_from_post, PDO::PARAM_STR);
                 $stmt->execute();
 
                 $message = "Sua senha foi redefinida com sucesso.";
