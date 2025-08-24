@@ -20,10 +20,8 @@ if ($retorno) {
         'email' => $email,
         'token' => $token
     ]);
-    
+
     // Comando cURL para chamar o script em segundo plano
-    // O comando 'curl' chama o script, e os redirecionamentos de saída ('/dev/null 2>&1 &')
-    // garantem que a execução não espere por uma resposta.
     $command = 'curl -X POST -d "' . $postData . '" ' .
                'https://apok.up.railway.app/php/send_email_async.php' .
                ' > /dev/null 2>&1 &';
