@@ -1,5 +1,6 @@
 {
     "require": {
-        "heroku/heroku-buildpack-php": "*"
+        "heroku/heroku-buildpack-php": "*",
+        "brevo/brevo-php": "1.x.x"
     }
 }
