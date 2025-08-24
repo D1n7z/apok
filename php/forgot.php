@@ -1,37 +1,51 @@
 <?php
-    include_once("generateToken.php");
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-    $retorno = processForgotPassword();
+require 'path/to/PHPMailer/src/Exception.php';
+require 'path/to/PHPMailer/src/PHPMailer.php';
+require 'path/to/PHPMailer/src/SMTP.php';
+include_once("generateToken.php");
 
-    if($retorno){
-        $email = $retorno[0];
-        $hash_token = $retorno[1];
-        error_log("Email para envio: " . $email);
-        error_log("Token gerado: " . $hash_token);
-        
-        $data = [
-            "email" => $email,
-            "token" => $hash_token
-        ];
+$retorno = processForgotPassword();
 
-        $options = [
-            'http' => [
-                'header'  => "Content-type: application/json\r\n",
-                'method'  => 'POST',
-                'content' => json_encode($data),
-            ],
-        ];
+if ($retorno) {
+    $email = $retorno[0];
+    $token = $retorno[1];
 
-        $context  = stream_context_create($options);
-        $result = file_get_contents('https://mailer-production-6e1d.up.railway.app/send-email', false, $context);
-        if($result === FALSE){
-            error_log("Erro ao enviar solicitação para o servidor.");
-            header('Location: ../index.html?error=1'); // Adiciona redirecionamento de erro
-        } else {
-            header('Location: ../index.html'); // Adiciona redirecionamento de sucesso
-        }
-    } else {
-        error_log("Erro ao processar a solicitação de recuperação de senha.");
-        header('Location: ../index.html?error=1'); // Adiciona redirecionamento de erro
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host       = 'smtp-relay.brevo.com'; 
+        $mail->SMTPAuth   = true;
+        $mail->Username   = '957944001@smtp-brevo.com'; 
+        $mail->Password   = 'aZX8QCPd63j5U2wt';    
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
+
+        // Remetente e destinatário
+        $mail->setFrom('noreply@capybyte.site', 'CapyByte');
+        $mail->addAddress($email);
+
+        // Conteúdo do e-mail
+        $mail->isHTML(true);
+        $mail->Subject = 'Redefinicao de Senha';
+        $mail->Body    = "
+            <p>Olá,</p>
+            <p>Recebemos um pedido de redefinicao de senha.</p>
+            <p>Clique no link abaixo para redefinir sua senha:</p>
+            <a href=\"https://capybyte.site/reset.php?token={$token}\">Redefinir Senha</a>
+        ";
+
+        $mail->send();
+        header('Location: ../index.html?success=1');
+    } catch (Exception $e) {
+        error_log("Erro ao enviar e-mail: {$mail->ErrorInfo}");
+        header('Location: ../index.html?error=1');
     }
+} else {
+    error_log("Erro ao processar a solicitacao de recuperacao de senha.");
+    header('Location: ../index.html?error=1');
+}
+
 ?>
