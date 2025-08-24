@@ -16,8 +16,7 @@ if ($retorno) {
 
     $mail = new PHPMailer(true);
     try {
-        // Habilita o debug detalhado para diagnosticar problemas de conexão
-        $mail->SMTPDebug = SMTP::DEBUG_SERVER; 
+        $mail->SMTPDebug = 0;  
         $mail->isSMTP();
         $mail->Host       = 'smtp-relay.brevo.com'; 
         $mail->SMTPAuth   = true;
