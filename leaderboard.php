@@ -66,31 +66,32 @@ curl_close($ch);
     </style>
 </head>
 <body>
-    <h1>Leaderboard</h1>
-
-    <div class="info-box">
-        <strong>Atenção:</strong> Se o serviço esteve inativo, o carregamento inicial do leaderboard pode demorar até um minuto. Obrigado pela paciência!
-    </div>
-
-    <?php if ($errorMessage): ?>
-        <div class="info-box error-box">
-            <p><?php echo htmlspecialchars($errorMessage); ?></p>
+    <div class="main-container">
+        <h1>Leaderboard</h1>
+        <div class="info-box">
+            <strong>Atenção:</strong> Se o serviço esteve inativo, o carregamento inicial do leaderboard pode demorar até um minuto. Obrigado pela paciência!
         </div>
-    <?php elseif ($data): ?>
-        <table class="leaderboard">
-            <tr>
-                <th>Nome</th>
-                <th>n_percentage</th>
-                <th>run_time</th>
-            </tr>
-            <?php foreach ($data as $entry): ?>
-            <tr>
-                <td><?= htmlspecialchars($entry['nome']) ?></td>
-                <td><?= htmlspecialchars($entry['n_percentage']) ?></td>
-                <td><?= htmlspecialchars($entry['run_time']) ?></td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-    <?php endif; ?>
+
+        <?php if ($errorMessage): ?>
+            <div class="info-box error-box">
+                <p><?php echo htmlspecialchars($errorMessage); ?></p>
+            </div>
+        <?php elseif ($data): ?>
+            <table class="leaderboard">
+                <tr>
+                    <th>Nome</th>
+                    <th>n_percentage</th>
+                    <th>run_time</th>
+                </tr>
+                <?php foreach ($data as $entry): ?>
+                <tr>
+                    <td><?= htmlspecialchars($entry['nome']) ?></td>
+                    <td><?= htmlspecialchars($entry['n_percentage']) ?></td>
+                    <td><?= htmlspecialchars($entry['run_time']) ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
+        <?php endif; ?>
+    </div>
 </body>
 </html>

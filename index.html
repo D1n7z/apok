@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <form method="POST" action="php/login.php">
+    <div class="form-container">
+        <form method="POST" action="php/login.php">
         <label> E-mail</label>
         <input type="email" name="txtEmail" required/>
         <br />
@@ -19,6 +20,7 @@
         <a href="leaderboard.php">Leaderboard</a>
         <input type="submit" value="Entrar" />
     </form>
+    </div>
     <div id='divErro' style="display: none">
         Login ou senha inválido.
     </div>

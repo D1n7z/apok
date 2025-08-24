@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <form method="POST" action="php/forgot.php">
+    <div class="form-container">
+        <form method="POST" action="php/forgot.php">
         <p>Insira o E-mail referente a sua conta e enviaremos um link de redifinição de senha</p>
         <label> Insira seu E-mail</label>
         <input type="email" name="txtEmail" />
@@ -17,6 +18,8 @@
         <br />
         <input type="submit" value="Enviar" />
     </form>
+    </div>
+    
     <div id='divErro' style="display: none">
         E-mail inválido ou diferente.
     </div>

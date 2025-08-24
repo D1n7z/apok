@@ -1,153 +1,177 @@
-/* Estilos gerais para o corpo da página */
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f8f9fa;
     color: #333;
     line-height: 1.6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     margin: 0;
+    padding: 20px; 
 }
 
-/* Container para centralizar o conteúdo */
-.container {
+
+/* Container para páginas com formulários (login, cadastro) */
+.form-container {
     background-color: #fff;
-    padding: 20px;
+    padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
+    margin: 40px auto; 
 }
 
-/* Estilos para os formulários */
+/* Container para páginas de conteúdo (dashboard, leaderboard) */
+.main-container {
+    width: 100%;
+    max-width: 900px; 
+    margin: 20px auto; 
+}
+
+
 form {
     display: flex;
     flex-direction: column;
 }
 
-/* Estilos para os títulos */
 h1 {
     text-align: center;
-    color: #333;
+    color: #2c3e50;
+    margin-bottom: 25px;
 }
 
-/* Estilos para as etiquetas dos formulários */
 label {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: bold;
+    font-size: 14px;
+    color: #555;
 }
 
-/* Estilos para os campos de entrada */
 input[type="email"],
 input[type="password"],
 input[type="text"] {
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Estilos para o botão de submissão */
-input[type="submit"] {
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+    outline: none;
+    border-color: #5cb85c;
+    box-shadow: 0 0 5px rgba(92, 184, 92, 0.5);
+}
+
+input[type="submit"],
+button {
     background-color: #5cb85c;
     color: white;
-    padding: 10px;
+    padding: 12px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    font-weight: bold;
     transition: background-color 0.3s;
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:hover,
+button:hover {
     background-color: #4cae4c;
 }
 
-/* Estilos para os links */
 a {
     color: #0275d8;
     text-decoration: none;
-    margin-bottom: 10px;
+    margin-top: 10px;
     text-align: center;
+    display: block; 
 }
 
 a:hover {
     text-decoration: underline;
 }
 
-/* Estilos para a mensagem de erro */
-#divErro {
-    background-color: #f2dede;
-    color: #a94442;
-    padding: 10px;
-    border: 1px solid #ebccd1;
-    border-radius: 4px;
-    margin-top: 15px;
+
+.info-box, #divErro {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 5px;
     text-align: center;
 }
 
-/* Estilos para a mensagem de validação de email */
+/* Caixa de aviso (amarela) */
+.info-box {
+    background-color: #fffbe6;
+    border-color: #ffe58f;
+    color: #8a6d3b;
+}
+
+/* Caixa de erro (vermelha) */
+#divErro {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+}
+
 #msg {
     font-size: 14px;
     margin-bottom: 10px;
     text-align: center;
 }
 
-/* Estilo para a tabela do leaderboard */
+
 table.leaderboard {
-    border-collapse: separate;
-    border-spacing: 0;
-    width: 90%;
-    max-width: 800px;
-    margin: 40px auto;
+    border-collapse: collapse; 
+    width: 100%;
+    margin: 20px 0;
     background: #fff;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border-radius: 8px;
     overflow: hidden;
-    font-size: 17px;
+    font-size: 16px;
 }
 
 table.leaderboard th, 
 table.leaderboard td {
-    padding: 14px 20px;
-    text-align: center;
-    border-bottom: 1px solid #e3e3e3;
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
 }
 
 table.leaderboard th {
-    background: linear-gradient(90deg, #5cb85c 0%, #4cae4c 100%);
+    background-color: #5cb85c;
     color: #fff;
     font-weight: 600;
-    letter-spacing: 1px;
-    font-size: 18px;
-    border: none;
+    text-transform: uppercase;
+    font-size: 14px;
+    text-align: center;
 }
 
-table.leaderboard tr:nth-child(even) td {
-    background: #f6faf6;
+table.leaderboard td {
+    color: #555;
+    text-align: center;
 }
 
-table.leaderboard tr:nth-child(odd) td {
-    background: #fff;
+table.leaderboard td:first-child {
+    text-align: left;
+    font-weight: bold;
 }
 
-table.leaderboard tr:hover td {
-    background: #d4edda;
-    transition: background 0.2s;
+
+table.leaderboard tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
-table.leaderboard tr:first-child th:first-child {
-    border-top-left-radius: 12px;
+table.leaderboard tr:hover {
+    background-color: #f1f1f1;
 }
-table.leaderboard tr:first-child th:last-child {
-    border-top-right-radius: 12px;
-}
-table.leaderboard tr:last-child td:first-child {
-    border-bottom-left-radius: 12px;
-}
-table.leaderboard tr:last-child td:last-child {
-    border-bottom-right-radius: 12px;
+
+/* Remove a borda da última linha */
+table.leaderboard tr:last-child td {
+    border-bottom: none;
 }
