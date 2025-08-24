@@ -1,10 +1,15 @@
 <?php
     function connectDB(){
-        $host = 'aws-1-sa-east-1.pooler.supabase.com';
-        $port = '5432';
-        $dbname = 'postgres';
-        $user = 'postgres.kjdfnnxekvvigylhxplh';
-        $password = 'cB#14?6>9memories';
+        $host = getenv('DB_HOST');
+        $port = getenv('DB_PORT');
+        $dbname = getenv('DB_NAME');
+        $user = getenv('DB_USER');
+        $password = getenv('DB_PASS');
+
+        if (!$host || !$user || !$password) {
+            error_log("Erro Crítico: As variáveis de ambiente do banco de dados não estão configuradas.");
+            die("Erro de configuração do servidor. Por favor, tente novamente mais tarde.");
+        }
 
         try {
             $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;";
@@ -13,9 +18,9 @@
             ]); 
             return $pdo;
         } catch (PDOException $e) {
-            die("Erro de conexão: " . $e->getMessage());
+            error_log("Erro de conexão com o banco de dados: " . $e->getMessage());
+            die("Ocorreu um erro ao conectar com o banco de dados.");
         }
-        
     }
 
     function closeDB($conn){
