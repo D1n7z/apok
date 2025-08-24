@@ -32,12 +32,17 @@
         return true;
     }
 
-    $email = $_POST['txtEmail'];
-    $id_player = getID($email);
-    $hash_token = generateToken();
-    if(storeToken($id_player, $hash_token)){
-        header('Location:../index.html');
-    } else{
-        header('HTTP/1.1 500 Internal Server Error');
+    function processForgotPassword(){
+        $email = $_POST['txtEmail'];
+        $id_player = getID($email);
+        $hash_token = generateToken();
+        if(storeToken($id_player, $hash_token)){
+            header('Location:../index.html');
+            return [$email, $hash_token];
+        } else{
+            header('HTTP/1.1 500 Internal Server Error');
+        }
     }
+
+    
 ?>
