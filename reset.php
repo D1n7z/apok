@@ -5,17 +5,46 @@ include_once("php/generateHash.php");
 
 $token_from_url = $_GET['token'] ?? '';
 $message = '';
+$show_form = false; // Variável para controlar a exibição do formulário
 
-// Verifica se uma nova senha foi enviada
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($token_from_url)) {
+    $conn = connectDB();
+    try {
+        // Verifica se o token existe e não está expirado
+        $stmt = $conn->prepare("SELECT id_player FROM tokens WHERE token_hash = :token_hash AND expires_at > NOW()");
+        $stmt->bindParam(':token_hash', $token_from_url, PDO::PARAM_STR);
+        $stmt->execute();
+        $token_data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($token_data) {
+            // Se o token for válido, permite que o formulário seja exibido
+            $show_form = true;
+        } else {
+            // Se o token não for encontrado ou estiver expirado
+            $message = "Este link de redefinição de senha é inválido, expirou ou já foi utilizado.";
+        }
+    } catch (PDOException $e) {
+        error_log("Erro ao validar token: " . $e->getMessage());
+        $message = "Ocorreu um erro. Tente novamente mais tarde.";
+    } finally {
+        if ($conn) {
+            closeDB($conn);
+        }
+    }
+}
+
+// Verifica se uma nova senha foi enviada (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token_from_post = $_POST['token'] ?? '';
     $newPassword = $_POST['new_password'] ?? '';
 
-    if (empty($token_from_post) || empty($newPassword)) {
-        $message = "Por favor, preencha todos os campos.";
+    if (strlen($newPassword) < 6) {
+        $message = "A senha deve ter pelo menos 6 caracteres.";
+        $show_form = true; // Mostra o formulário novamente para o usuário corrigir
+    } elseif (empty($token_from_post)) {
+        $message = "Token inválido ou expirado.";
     } else {
         $conn = connectDB();
-
         try {
             // Procura o token_hash no banco de dados
             $stmt = $conn->prepare("SELECT id_player, expires_at FROM tokens WHERE token_hash = :token_hash AND expires_at > NOW()");
@@ -24,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $token_data = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($token_data) {
-                // Token é válido e não expirou, prossegue com a redefinição de senha
+                // Token é válido, prossegue com a redefinição
                 $id_player = $token_data['id_player'];
                 $hashed_password = generateHash($newPassword);
 
@@ -41,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $message = "Sua senha foi redefinida com sucesso.";
             } else {
-                $message = "Token inválido ou expirado.";
+                $message = "Este link de redefinição de senha é inválido, expirou ou já foi utilizado.";
             }
         } catch (PDOException $e) {
             error_log("Erro de redefinição de senha: " . $e->getMessage());
@@ -54,8 +83,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-if (strlen($newPassword) < 6) {
-    $message = "A senha deve ter pelo menos 6 caracteres.";
+// Se não houver token na URL (acesso direto), exibe mensagem de erro
+if (empty($token_from_url) && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    $message = "Nenhum token de redefinição fornecido.";
 }
 ?>
 
@@ -65,13 +95,16 @@ if (strlen($newPassword) < 6) {
     </head>
     <body>
         <h1>Redefinir Senha</h1>
+        
         <?php if (!empty($message)): ?>
             <p><?php echo htmlspecialchars($message); ?></p>
-        <?php else: ?>
+        <?php endif; ?>
+
+        <?php if ($show_form): ?>
             <form action="reset.php" method="POST">
                 <input type="hidden" name="token" value="<?php echo htmlspecialchars($token_from_url); ?>">
-                <label for="new_password">Nova Senha:</label>
-                <input type="password" name="new_password" required>
+                <label for="new_password">Nova Senha (mínimo 6 caracteres):</label>
+                <input type="password" name="new_password" required minlength="6">
                 <button type="submit">Redefinir Senha</button>
             </form>
         <?php endif; ?>
