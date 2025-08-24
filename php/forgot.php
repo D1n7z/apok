@@ -1,5 +1,6 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 require 'PHPMailer-master/src/Exception.php';
@@ -15,6 +16,8 @@ if ($retorno) {
 
     $mail = new PHPMailer(true);
     try {
+        // Habilita o debug detalhado para diagnosticar problemas de conexão
+        $mail->SMTPDebug = SMTP::DEBUG_SERVER; 
         $mail->isSMTP();
         $mail->Host       = 'smtp-relay.brevo.com'; 
         $mail->SMTPAuth   = true;
@@ -39,13 +42,13 @@ if ($retorno) {
 
         $mail->send();
         header('Location: ../index.html?success=1');
-    } catch (Exception $e) {
-        error_log("Erro ao enviar e-mail: {$mail->ErrorInfo}");
-        header('Location: ../index.html?error=1');
-    }
-} else {
-    error_log("Erro ao processar a solicitacao de recuperacao de senha.");
-    header('Location: ../index.html?error=1');
-}
+            } catch (Exception $e) {
+                error_log("Erro ao enviar e-mail: {$mail->ErrorInfo}");
+                header('Location: ../index.html?error=1');
+            }
+        } else {
+            error_log("Erro ao processar a solicitacao de recuperacao de senha.");
+            header('Location: ../index.html?error=1');
+        }
 
 ?>
