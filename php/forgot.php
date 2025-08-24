@@ -16,7 +16,7 @@ if ($retorno) {
 
     $mail = new PHPMailer(true);
     try {
-        $mail->SMTPDebug = \PHPMailer\PHPMailer\SMTP::DEBUG_SERVER;
+        $mail->SMTPDebug = 0;
         $mail->isSMTP();
         $mail->Host       = 'smtp-relay.brevo.com'; 
         $mail->SMTPAuth   = true;
@@ -42,7 +42,7 @@ if ($retorno) {
         ";
 
         $mail->send();
-        header('Location: ../index.html?success=1');
+        header('Location:../index.html');
             } catch (Exception $e) {
                 error_log("Erro ao enviar e-mail: {$mail->ErrorInfo}");
                 header('Location: ../index.html?error=1');
