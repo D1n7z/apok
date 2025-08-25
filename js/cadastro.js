@@ -1,5 +1,6 @@
 const form = document.getElementById("forms"); 
 const emailInput = document.getElementById("email");
+const emailConfirmInput = document.getElementById("emailConfirm");
 const msg = document.getElementById("msg");
 
 emailInput.addEventListener("input", function() {
