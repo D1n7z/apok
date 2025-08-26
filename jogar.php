@@ -8,7 +8,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -101,8 +100,8 @@ body {
 	z-index: 1;
 }
 		</style>
-		<link id="-gd-engine-icon" rel="icon" type="image/png" href="Memorias de alguem.icon.png" />
-<link rel="apple-touch-icon" href="jogo/Memorias de alguem.apple-touch-icon.png"/>
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="jogo/Memorias de alguem.icon.png" />
+<link rel="apple-touch-icon" href="Memorias de alguem.apple-touch-icon.png"/>
 
 	</head>
 	<body>
@@ -122,7 +121,7 @@ body {
 
 		<script src="jogo/Memorias de alguem.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"executable":"jogo/Memorias de alguem","experimentalVK":false,"fileSizes":{"jogo/Memorias de alguem.pck":16168123,"jogo/Memorias de alguem.wasm":35634592},"focusCanvas":true,"gdnativeLibs":[]};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"ensureCrossOriginIsolationHeaders":true,"executable":"Memorias de alguem","experimentalVK":false,"fileSizes":{"Memorias de alguem.pck":12736768,"Memorias de alguem.wasm":52126319},"focusCanvas":true,"gdextensionLibs":[]};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
