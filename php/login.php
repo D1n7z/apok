@@ -12,6 +12,7 @@
         
         $_SESSION['user_id'] = $player['id_player'];
         $_SESSION['user_name'] = $player['nome'];
+        $_SESSION['loggedin'] = true; 
         
         header('Location: dashboard.php');
         exit(); 
