@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <div class="aba-container" id="abaInfoSuperior">
+        <div class="abaInfo-container">
+            <p class="informação">Apokalisis</p>
+        </div>
+    </div>
+
     <div class="form-container">
         <form method="POST" action="php/login.php">
         <label> E-mail</label>
@@ -17,12 +23,18 @@
         <br />
         <a href="identify.html">Esqueceu a senha?</a><br />
         <a href="cadastro.html">Cadastre-se</a><br />
-        <a href="leaderboard.php">Leaderboard</a>
+        <a href="leaderboard.php" id=linkLeaderboard>Leaderboard</a>
         <input type="submit" value="Entrar" />
     </form>
         <div id='divErro' style="display: none">
             Login ou senha inválido.
         </div>
+    </div>
+
+    <div class="aba-container" id="abaInferior">
+        <div class="abaInfo-container">
+            <p class="informação"> Contato</p> 
+        </div>    
     </div>
 
     <script src="js/login.js"></script>
