@@ -1,10 +1,17 @@
 <?php
-
+// apok/php/send_email_async.php
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
+use Brevo\Client;
+use GuzzleHttp\Client as GuzzleClient;
 
+// Inclui o autoload do Composer
 require_once __DIR__ . '/../vendor/autoload.php';
+
+// Aumenta o tempo máximo de execução do script para 2 minutos
+// Isso dá tempo suficiente para as tentativas de conexão e fallback
+set_time_limit(120);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_POST['token'])) {
     $email = $_POST['email'];
@@ -12,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_P
     $resetLink = "https://capybyte.site/reset.php?token=" . urlencode($token);
     $emailSent = false;
 
-
+    // Constrói o corpo do e-mail
     $emailBody = "
         <html><body>
         <p>Olá,</p>
@@ -23,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_P
     ";
     $altBody = "Para redefinir sua senha, copie e cole este link no seu navegador: " . $resetLink;
 
-    // Tenta enviar via PHPMailer (SMTP)
+    // Tenta enviar via PHPMailer (SMTP) com timeout curto
     try {
         $mail = new PHPMailer(true);
         // Tenta enviar pela porta 587
@@ -35,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_P
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
         $mail->CharSet    = 'UTF-8';
+        $mail->Timeout    = 10; // Timeout de 10 segundos
 
         $mail->setFrom('noreply@capybyte.site', 'CapyByte');
         $mail->addAddress($email);
@@ -49,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_P
         $emailSent = true;
 
     } catch (PHPMailerException $e) {
-        error_log("Falha porta 587: " . $mail->ErrorInfo);
+        error_log("Falha porta 587: " . $e->getMessage()); // Usando getMessage() para um log mais limpo
         error_log("Tentando porta 465...");
 
         // Tenta enviar pela porta 465
@@ -63,6 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_P
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = 465;
             $mail->CharSet    = 'UTF-8';
+            $mail->Timeout    = 10; // Timeout de 10 segundos
 
             $mail->setFrom('noreply@capybyte.site', 'CapyByte');
             $mail->addAddress($email);
@@ -77,12 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_P
             $emailSent = true;
 
         } catch (PHPMailerException $e_fallback) {
-            error_log("Falha porta 465: " . $mail->ErrorInfo);
-        
+            error_log("Falha porta 465: " . $e_fallback->getMessage());
         }
     }
 
-    // Se o e-mail não foi enviado via SMTP, tenta via API
+    // Se o e-mail não foi enviado via SMTP, tenta via API da Brevo
     if (!$emailSent) {
         error_log("SMTP falhou. Tentando enviar via API da Brevo...");
 
@@ -92,8 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_P
             exit();
         }
 
-        $config = Brevo\Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', $apiKey);
-        $apiInstance = new Brevo\Client\Api\TransactionalEmailsApi(new GuzzleHttp\Client(), $config);
+        $config = Client\Configuration::getDefaultConfiguration()->setApiKey('api-key', $apiKey);
+        $apiInstance = new Client\Api\TransactionalEmailsApi(new GuzzleClient(), $config);
         $sendSmtpEmail = new \Brevo\Client\Model\SendSmtpEmail([
             'subject' => 'Redefinição de Senha',
             'sender' => ['name' => 'CapyByte', 'email' => 'noreply@capybyte.site'],
