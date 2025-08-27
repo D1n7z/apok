@@ -100,7 +100,7 @@ body {
 	z-index: 1;
 }
 		</style>
-		<link id="-gd-engine-icon" rel="icon" type="image/png" href="jogo/Memorias de alguem.icon.png" />
+		<link id="-gd-engine-icon" rel="icon" type="image/png" href="Memorias de alguem.icon.png" />
 <link rel="apple-touch-icon" href="Memorias de alguem.apple-touch-icon.png"/>
 
 	</head>
@@ -119,9 +119,9 @@ body {
 			<div id="status-notice"></div>
 		</div>
 
-		<script src="jogo/Memorias de alguem.js"></script>
+		<script src="Memorias de alguem.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"executable":"jogo/Memorias de alguem","experimentalVK":false,"fileSizes":{"jogo/Memorias de alguem.pck":16168123,"jogo/Memorias de alguem.wasm":35634592},"focusCanvas":true,"gdnativeLibs":[]};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"executable":"Memorias de alguem","experimentalVK":false,"fileSizes":{"jogo/Memorias de alguem.pck":16168123,"jogo/Memorias de alguem.wasm":35634592},"focusCanvas":true,"gdnativeLibs":[]};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 

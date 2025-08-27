@@ -20,7 +20,7 @@
     
     <p>O seu ID de utilizador é: <?php echo htmlspecialchars($_SESSION['user_id']); ?></p>
 
-    <a href="../jogar.php">Jogar Agora!</a>
+    <a href="../jogo/jogar.php">Jogar Agora!</a>
     <a href="logout.php">Terminar Sessão</a>
 </body>
 </html>
