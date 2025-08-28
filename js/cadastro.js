@@ -5,11 +5,9 @@ const msg = document.getElementById("msg");
 
 emailInput.addEventListener("input", function() {
     const emailValue = emailInput.value;
-    fetch("php/validate_email.php", {
+        fetch("./php/validate_email.php", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: `email=${encodeURIComponent(emailValue)}`
     })
     .then(response => response.json())
@@ -22,10 +20,12 @@ emailInput.addEventListener("input", function() {
             msg.style.color = "green";
         }
     })
-    .catch(error => {
+    .catch(async error => {
         console.error("Erro ao validar e-mail:", error);
+        const errText = await error.text?.();
+        console.log("Resposta do servidor:", errText);
     });
-});
+
 
 form.addEventListener("submit", function(event){
     event.preventDefault(); 
