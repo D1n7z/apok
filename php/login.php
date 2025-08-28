@@ -7,11 +7,11 @@
     $passwd = $_POST['txtSenha'];
 
 
-    $admin_email = "admin@email.com";
-    $admin_password = "senha_forte_admin"; 
+    $admin_email = getenv('ADMIN_EMAIL');
+    $admin_password = getenv('ADMIN_PASSWORD'); 
 
     if ($email === $admin_email && $passwd === $admin_password) {
-        $_SESSION['user_id'] = 'admin_id'; 
+        $_SESSION['user_id'] = '0'; 
         $_SESSION['user_name'] = 'Administrador';
         $_SESSION['loggedin'] = true;
         $_SESSION['is_admin'] = true;
