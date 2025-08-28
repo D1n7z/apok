@@ -1,4 +1,4 @@
-const form = document.getElementById("forms"); 
+const form = document.getElementById("forms");
 const emailInput = document.getElementById("email");
 const emailConfirmInput = document.getElementById("emailConfirm");
 const msg = document.getElementById("msg");
@@ -28,10 +28,25 @@ emailInput.addEventListener("input", function() {
 });
 
 form.addEventListener("submit", function(event){
-    event.preventDefault()
+    event.preventDefault(); 
+    
     const nome = document.getElementById("nome").value.trim();
     const email = document.getElementById("email").value.trim();
+    const emailConfirm = document.getElementById("emailConfirm").value.trim();
     const senha = document.getElementById("senha").value;
+    const senhaConfirm = document.getElementById("senhaConfirm").value;
+
+
+    if (email !== emailConfirm) {
+        alert("Os e-mails não correspondem.");
+        return; 
+    }
+
+    if (senha !== senhaConfirm) {
+        alert("As senhas não correspondem.");
+        return; 
+    }
+    
 
     if (nome.length < 3) {
         alert("Nome deve ter pelo menos 3 caracteres.");
@@ -49,8 +64,7 @@ form.addEventListener("submit", function(event){
         return;
     }
 
+  
     form.submit();
     alert("Cadastro realizado com sucesso!");
 });
-
-    
