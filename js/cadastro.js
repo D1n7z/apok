@@ -25,6 +25,7 @@ emailInput.addEventListener("input", function() {
         const errText = await error.text?.();
         console.log("Resposta do servidor:", errText);
     });
+});
 
 
 form.addEventListener("submit", function(event){
