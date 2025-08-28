@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['user_id'])) {
+    if (!isset($_SESSION['user_id']) || (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true)) {
         header('Location: ../index.html');
         exit();
     }
@@ -11,7 +11,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
