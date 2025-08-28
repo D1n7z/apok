@@ -5,7 +5,7 @@
     $email = $_POST['txtEmail'];
     $passwd = $_POST['txtSenha'];
     $hash = generateHash($passwd);
-    $estado = loginPlayer($nome, $email, $hash);
+    $estado = registerPlayer($nome, $email, $hash);
     if($estado){
         header('Location:../index.html');
     } else{

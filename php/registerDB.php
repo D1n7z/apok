@@ -1,17 +1,17 @@
 <?php
     include_once("connection.php");
-    function loginPlayer($nome, $email, $passwd){
-        // Conecta no Banco
+    function registerPlayer($nome, $email, $passwd){ 
         $conn = connectDB();
-
-        // Prepare o SQL
-        $sql = "INSERT INTO player(nome, senha_hash, email) VALUES (?, ?, ?);";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$nome, $passwd, $email]);
-
-        // Fecha o Banco
-        closeDB($conn);
-
-        return true;
+        try {
+            $sql = "INSERT INTO player(nome, senha_hash, email) VALUES (?, ?, ?);";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$nome, $passwd, $email]);
+            return true;
+        } catch (PDOException $e) {
+            error_log("Erro ao registrar usuário: " . $e->getMessage());
+            return false;
+        } finally {
+            closeDB($conn);
+        }
     }
 ?>
